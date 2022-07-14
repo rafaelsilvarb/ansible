@@ -1,4 +1,3 @@
-# ansible notebook, to configure the VMs on GCP
 - name: Create Compute Engine instances
   hosts: localhost
   gather_facts: no
