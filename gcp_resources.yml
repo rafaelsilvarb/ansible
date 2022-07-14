@@ -20,7 +20,7 @@
      register: gce_ip
      
    - name: Bring up the instance in the zone
-     google.cloud.gcp_compute_instance::
+     gcp_compute_instance::
        name: teste1
        machine_type: "{{ machine_type }}"
        disks:
