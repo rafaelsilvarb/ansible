@@ -51,4 +51,4 @@
       
     - name: Show RHEL8 Instance Details
       debug:
-        msg: "The RHEL8 instance is accessible at {{ address.address }}"
+        msg: "The RHEL8 instance is accessible at {{ gce_ip.address }}"
