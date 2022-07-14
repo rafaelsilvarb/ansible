@@ -48,6 +48,15 @@
     - name: Save host data for first zone 
       add_host: hostname={{ gce_ip.address }} groupname=gce_instances_ips
       
+- name: Deploy httpd and custom html page 
+  hosts: gce_instances_ips
+  become: yes   # to run as root
+  become_method: sudo
+  roles:
+    - web-site
+
     - name: Instance Details
       debug:
         msg: "The Instance is accessible at {{ gce_ip.address }}"
+
+
