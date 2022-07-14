@@ -32,6 +32,9 @@
              - name: External NAT  # public IP
                nat_ip: "{{ gce_ip }}"
                type: ONE_TO_ONE_NAT
+       metadata:
+       ssh-keys: "root:{{ lookup('file',  'id_rsa.pub') }}"
+       
        tags:
          items: 
            - http-server
