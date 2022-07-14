@@ -40,7 +40,11 @@
        zone: "{{ zone }}"
        project: "{{ gcp_project }}"
        auth_kind: "{{ gcp_cred_kind }}"
-     register: gce 
+     register: gce
+     
+    - name: Show RHEL8 Instance Details
+      debug:
+        msg: "The RHEL8 instance is accessible at {{ address.address }}"
 
   post_tasks:
     - name: Wait for SSH for instance
