@@ -5,8 +5,8 @@
   vars:
       gcp_project: rbs-lab01
       gcp_cred_kind: serviceaccount
-      zone: "us-central1-c"
-      region: "us-central1"
+      zone: "us-east1-b"
+      region: "us-east1"
       machine_type: "e2-micro"
       image: "projects/rocky-linux-cloud/global/images/rocky-linux-8-v20220712" 
 
