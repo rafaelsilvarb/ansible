@@ -5,8 +5,8 @@
   vars:
       gcp_project: rbs-lab01
       gcp_cred_kind: serviceaccount
-      zone: "asia-east1-b"
-      region: "asia-east1"
+      zone: "us-central1-a"
+      region: "us-central1"
       machine_type: "n1-standard-1"
       image: "projects/rocky-linux-cloud/global/images/rocky-linux-8-v20220126" 
 
@@ -16,7 +16,6 @@
        name: "{{ zone }}-ip"
        region: "{{ region }}"
        project: "{{ gcp_project }}"
-       service_account_file: "{{ gcp_cred_file }}"
        auth_kind: "{{ gcp_cred_kind }}"
      register: gce_ip
    - name: Bring up the instance in the zone
@@ -39,7 +38,6 @@
            - https-server
        zone: "{{ zone }}"
        project: "{{ gcp_project }}"
-       service_account_file: "{{ gcp_cred_file }}"
        auth_kind: "{{ gcp_cred_kind }}"
      register: gce 
 
