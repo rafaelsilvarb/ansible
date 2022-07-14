@@ -12,7 +12,7 @@
 
   tasks:
    - name: Create private IP address to the VM instance
-     gcp_compute_address:
+     gce:
        name: "{{ zone }}-ip"
        region: "{{ region }}"
        project: "{{ gcp_project }}"
@@ -20,7 +20,7 @@
      register: gce_ip
      
    - name: Bring up the instance in the zone
-     gcp_compute_instance:
+     gce:
        instance_names: vm-ansible
        name: "{{ zone }}"
        machine_type: "{{ machine_type }}"
