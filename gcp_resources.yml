@@ -1,58 +1,58 @@
-- name: Create a GCP instance
+# ansible notebook, to configure the VMs on GCP
+- name: Create Compute Engine instances
   hosts: localhost
-  
+  gather_facts: no
   vars:
-     gcp_project: rbs-lab01
-     gcp_cred_kind: serviceaccount
-     
+      gcp_project: hopeful-timing-337507
+      gcp_cred_kind: serviceaccount
+      gcp_cred_file: "/home/vanquisher3498/Desktop/hopeful-timing-337507-cbff52437359.json"
+      zone: "asia-east1-b"
+      region: "asia-east1"
+      machine_type: "n1-standard-1"
+      image: "projects/rocky-linux-cloud/global/images/rocky-linux-8-v20220126" 
+
   tasks:
-    - name: create a disk mapped from RHEL8 image
-      gcp_compute_disk:
-        name: disk-instance
-        size_gb: 50
-        source_image: projects/rhel-cloud/global/images/rhel-8-v20190905
-        zone: us-central1-a
-        project: "{{ gcp_project }}"
-        auth_kind: "{{ gcp_cred_kind }}"
-        state: present
-      register: disk
+   - name: Create private IP address to the VM instance
+     gcp_compute_address:
+       name: "{{ zone }}-ip"
+       region: "{{ region }}"
+       project: "{{ gcp_project }}"
+       service_account_file: "{{ gcp_cred_file }}"
+       auth_kind: "{{ gcp_cred_kind }}"
+     register: gce_ip
+   - name: Bring up the instance in the zone
+     gcp_compute_instance:
+       name: "{{ zone }}"
+       machine_type: "{{ machine_type }}"
+       disks:
+         - auto_delete: true
+           boot: true
+           initialize_params:
+             source_image: "{{ image }}"
+       network_interfaces:
+         - access_configs:
+             - name: External NAT  # public IP
+               nat_ip: "{{ gce_ip }}"
+               type: ONE_TO_ONE_NAT
+       tags:
+         items: 
+           - http-server
+           - https-server
+       zone: "{{ zone }}"
+       project: "{{ gcp_project }}"
+       service_account_file: "{{ gcp_cred_file }}"
+       auth_kind: "{{ gcp_cred_kind }}"
+     register: gce 
 
-    - name: create a  VPC network
-      gcp_compute_network:
-        name: network-instance
-        project: "{{ gcp_project }}"
-        auth_kind: "{{ gcp_cred_kind }}"
-        state: present
-      register: network
+  post_tasks:
+    - name: Wait for SSH for instance
+      wait_for: delay=5 sleep=5 host={{ gce_ip.address }} port=22 state=started timeout=100
+    - name: Save host data for first zone 
+      add_host: hostname={{ gce_ip.address }} groupname=gce_instances_ips
 
-    - name: create an IPv4 public IP Address
-      gcp_compute_address:
-        name: address-instance
-        region: us-central1
-        project: "{{ gcp_project }}"
-        auth_kind: "{{ gcp_cred_kind }}"
-        state: present
-      register: address
-
-    - name: create the RHEL8 instance
-      gcp_compute_instance:
-        name: rhel8
-        machine_type: n1-standard-1
-        disks:
-        - auto_delete: 'true'
-          boot: 'true'
-          source: "{{ disk }}"
-        network_interfaces:
-        - network: "{{ network }}"
-          access_configs:
-          - name: External NAT
-            nat_ip: "{{ address }}"
-            type: ONE_TO_ONE_NAT
-        zone: us-central1-a
-        project: "{{ gcp_project }}"
-        auth_kind: "{{ gcp_cred_kind }}"
-        state: present
-        
-    - name: Show RHEL8 Instance Details
-      debug:
-        msg: "The RHEL8 instance is accessible at {{ address.address }}"
+- name: Deploy httpd and custom html page 
+  hosts: gce_instances_ips
+  become: yes   # to run as root
+  become_method: sudo
+  roles:
+    - simple-web
