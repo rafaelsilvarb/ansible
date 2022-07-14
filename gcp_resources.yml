@@ -3,9 +3,8 @@
   hosts: localhost
   gather_facts: no
   vars:
-      gcp_project: hopeful-timing-337507
+      gcp_project: rbs-lab01
       gcp_cred_kind: serviceaccount
-      gcp_cred_file: "/home/vanquisher3498/Desktop/hopeful-timing-337507-cbff52437359.json"
       zone: "asia-east1-b"
       region: "asia-east1"
       machine_type: "n1-standard-1"
