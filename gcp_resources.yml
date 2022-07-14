@@ -2,7 +2,7 @@
   hosts: localhost
   
   vars:
-     gcp_project: ansible-tower-sreejith
+     gcp_project: rbs-lab01
      gcp_cred_kind: serviceaccount
      
   tasks:
