@@ -20,7 +20,7 @@
      
    - name: Bring up the instance in the zone
      gcp_compute_instance:
-       name: teste2
+       name: teste
        machine_type: "{{ machine_type }}"
        disks:
          - auto_delete: true
