@@ -8,7 +8,7 @@
       zone: "us-east1-b"
       region: "us-east1"
       machine_type: "e2-micro"
-      image: "projects/rocky-linux-cloud/global/images/rocky-linux-8-v20220712" 
+      image: "projects/rocky-linux-cloud/global/images/rocky-linux-8-v20220621" 
 
   tasks:
    - name: Create private IP address to the VM instance
