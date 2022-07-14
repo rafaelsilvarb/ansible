@@ -48,10 +48,3 @@
       wait_for: delay=5 sleep=5 host={{ gce_ip.address }} port=22 state=started timeout=100
     - name: Save host data for first zone 
       add_host: hostname={{ gce_ip.address }} groupname=gce_instances_ips
-
-- name: Deploy httpd and custom html page 
-  hosts: gce_instances_ips
-  become: yes   # to run as root
-  become_method: sudo
-  roles:
-    - simple-web
