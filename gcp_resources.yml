@@ -6,7 +6,6 @@
       gcp_project: rbs-lab01
       gcp_cred_kind: serviceaccount
       zone: "us-east1-b"
-      instance_name: ansible_vm
       region: "us-east1"
       machine_type: "e2-micro"
       image: "projects/rocky-linux-cloud/global/images/rocky-linux-8-v20220621" 
@@ -22,7 +21,7 @@
      
    - name: Bring up the instance in the zone
      gcp_compute_instance:
-       instance_names: "{{ instance_name }}"
+       instance_names: vm-ansible
        name: "{{ zone }}"
        machine_type: "{{ machine_type }}"
        disks:
