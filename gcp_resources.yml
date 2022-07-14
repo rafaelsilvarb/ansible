@@ -55,8 +55,8 @@
   roles:
     - web-site
 
-    - name: Instance Details
-      debug:
-        msg: "The Instance is accessible at {{ gce_ip.address }}"
+      #    - name: Instance Details
+      #debug:
+      #  msg: "The Instance is accessible at {{ gce_ip.address }}"
 
 
